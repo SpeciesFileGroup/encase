@@ -15,8 +15,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/lib/main.ts'),
-      name: 'VueContainers',
-      fileName: (format) => `vue-containers.${format}.js`
+      name: 'VueEnclose',
+      fileName: 'vue-enclose'
     },
     rollupOptions: {
       external: ['vue', 'three'],

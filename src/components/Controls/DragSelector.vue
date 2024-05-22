@@ -1,7 +1,6 @@
 <template>
   <div
     v-if="mousePressed && startPoint"
-    class="drag-box"
     :style="style"
   ></div>
 </template>
@@ -15,6 +14,13 @@ import { getMousePosition } from '@/utils'
 type MouseCoordinates = {
   x: number
   y: number
+}
+
+const DRAG_BOX_STYLE = {
+  position: 'absolute',
+  zIndex: 100,
+  backgroundColor: COLORS.ContainerItemSelected,
+  opacity: 0.2
 }
 
 const props = defineProps({
@@ -40,7 +46,8 @@ const style = computed(() => ({
   left: `${Math.min(startPoint.value.x, endPoint.value.x)}px`,
   top: `${Math.min(startPoint.value.y, endPoint.value.y)}px`,
   width: `${Math.abs(startPoint.value.x - endPoint.value.x)}px`,
-  height: `${Math.abs(startPoint.value.y - endPoint.value.y)}px`
+  height: `${Math.abs(startPoint.value.y - endPoint.value.y)}px`,
+  ...DRAG_BOX_STYLE
 }))
 
 function makeDefaultPosition() {
@@ -109,12 +116,3 @@ onBeforeUnmount(() => {
   window.removeEventListener('mousemove', handleMouseMove)
 })
 </script>
-
-<style scoped>
-.drag-box {
-  position: absolute;
-  z-index: 100;
-  background-color: v-bind(COLORS.ContainerItemSelected);
-  opacity: 0.2;
-}
-</style>

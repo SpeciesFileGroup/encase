@@ -1,0 +1,24 @@
+{
+  "name": "@sfgrp/vue-enclose",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build-check": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tresjs/core": "^3.9.0",
+    "three": "^0.164.1",
+    "vue": "^3.4.27"
+  },
+  "devDependencies": {
+    "@types/three": "^0.164.1",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11",
+    "vue-tsc": "^2.0.19"
+  }
+}

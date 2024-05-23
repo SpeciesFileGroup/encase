@@ -1,8 +1,11 @@
 <template>
-  <div ref="rootRef">
+  <div
+    ref="rootRef"
+    :style="ROOT_STYLE"
+  >
     <TresCanvas
-      v-bind="canvasOpts"
       ref="sceneRef"
+      v-bind="canvasOpts"
     >
       <TresPerspectiveCamera
         :fov="CAMERA_FOV"
@@ -89,7 +92,7 @@ import type {
   SelectedContainerItem,
   CanvasOptions
 } from '@/types'
-import { reactive, ref, computed, watch, onMounted } from 'vue'
+import { reactive, ref, computed, watch, onMounted, CSSProperties } from 'vue'
 import { BasicShadowMap, NoToneMapping, SRGBColorSpace } from 'three'
 import { TresCanvas } from '@tresjs/core'
 import { useKeyboardKeys } from '@/composables'
@@ -114,8 +117,10 @@ type Props = {
   canvas?: CanvasOptions
 }
 
-const orbitEnabled = ref(true)
 const CAMERA_FOV = 25
+const ROOT_STYLE: CSSProperties = {
+  position: 'relative'
+}
 
 const props = withDefaults(defineProps<Props>(), {
   itemSize: 1,
@@ -135,6 +140,7 @@ const canvasOpts = reactive({
 const rootRef = ref()
 const sceneRef = ref<InstanceType<typeof TresCanvas>>()
 const { isKeyControlPressed, isKeyShiftPressed } = useKeyboardKeys()
+const orbitEnabled = ref(true)
 
 const containerSize = computed(() => [
   props.container.sizeX,

@@ -2,6 +2,9 @@
   "name": "@sfgrp/vue-enclose",
   "private": false,
   "version": "0.0.2",
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "main": "./dist/vue-enclose.umd.cjs",
   "module": "./dist/vue-enclose.js",
@@ -14,6 +17,17 @@
   "publishConfig": {
     "access": "public"
   },
+  "homepage": "https://github.com/SpeciesFileGroup/encase",
+  "license": "NCSA",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SpeciesFileGroup/encase.git"
+  },
+  "keywords": [
+    "species file group",
+    "container 3d",
+    "encase"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",

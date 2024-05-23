@@ -15,8 +15,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/lib/main.ts'),
-      name: 'VueEnclose',
-      fileName: 'vue-enclose'
+      name: 'encase',
+      fileName: 'encase'
     },
     rollupOptions: {
       external: ['vue', 'three'],

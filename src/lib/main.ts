@@ -1,3 +1,3 @@
-import VueEnclose from '@/components/ContainerVisualization.vue'
+import VueEncase from '@/components/ContainerVisualization.vue'
 
-export { VueEnclose }
+export { VueEncase }

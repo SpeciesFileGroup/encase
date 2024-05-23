@@ -1,17 +1,17 @@
 {
-  "name": "@sfgrp/vue-enclose",
+  "name": "@sfgrp/encase",
   "private": false,
-  "version": "0.0.3",
+  "version": "0.0.1",
   "files": [
     "dist"
   ],
   "type": "module",
-  "main": "./dist/vue-enclose.umd.cjs",
-  "module": "./dist/vue-enclose.js",
+  "main": "./dist/encase.umd.cjs",
+  "module": "./dist/encase.js",
   "exports": {
     ".": {
-      "import": "./dist/vue-enclose.js",
-      "require": "./dist/vue-enclose.umd.cjs"
+      "import": "./dist/encase.js",
+      "require": "./dist/encase.umd.cjs"
     }
   },
   "publishConfig": {

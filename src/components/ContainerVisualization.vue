@@ -38,13 +38,9 @@
                 :size="itemSize"
                 :space="padding"
                 :selected="isSelected({ x, y, z })"
-                :container-item="getContainerItem([x, y, z])"
+                :container-item="getContainerItem({ x, y, z })"
                 @contextmenu.prevent=""
-                @click="
-                  (e) => {
-                    onClick({ x, y, z }, e)
-                  }
-                "
+                @click="(e) => onClick({ x, y, z }, e)"
               />
             </TresGroup>
           </template>
@@ -85,21 +81,15 @@
 </template>
 
 <script setup lang="ts">
-import type {
-  Container,
-  ContainerItem,
-  Position,
-  SelectedContainerItem,
-  CanvasOptions
-} from '@/types'
+import type { Container, ContainerItem, Position, CanvasOptions } from '@/types'
 import { reactive, ref, computed, watch, onMounted, CSSProperties } from 'vue'
 import { BasicShadowMap, NoToneMapping, SRGBColorSpace } from 'three'
 import { TresCanvas } from '@tresjs/core'
 import { useKeyboardKeys } from '@/composables'
 import {
-  getContainerPositionByCoordinates,
   calculateCameraDistance,
-  getPosition
+  getPosition,
+  hasSameCoordinates
 } from '@/utils'
 
 import VContainerItem from './Container/ContainerItem.vue'
@@ -137,9 +127,10 @@ const canvasOpts = reactive({
   toneMapping: NoToneMapping
 })
 
+const { isKeyControlPressed, isKeyShiftPressed } = useKeyboardKeys()
+
 const rootRef = ref()
 const sceneRef = ref<InstanceType<typeof TresCanvas>>()
-const { isKeyControlPressed, isKeyShiftPressed } = useKeyboardKeys()
 const orbitEnabled = ref(true)
 
 const containerSize = computed(() => [
@@ -166,7 +157,7 @@ const axisKey = computed(
     `x${containerSize.value[0]}y${containerSize.value[1]}z${containerSize.value[2]}`
 )
 
-const selectedItems = defineModel<SelectedContainerItem[]>('selectedItems', {
+const selectedItems = defineModel<ContainerItem[]>('selectedItems', {
   type: Array,
   default: () => []
 })
@@ -196,11 +187,8 @@ function onClick(position: Position, e: MouseEvent) {
 }
 
 function isSelected(coordinates: Position): boolean {
-  return selectedItems.value.some(
-    ({ position }: { position: Position }) =>
-      position.x === coordinates.x &&
-      position.y === coordinates.y &&
-      position.z === coordinates.z
+  return selectedItems.value.some((item: ContainerItem) =>
+    hasSameCoordinates(item.position, coordinates)
   )
 }
 
@@ -211,8 +199,8 @@ function containerItemSelected(
   const items = positions.map(makeSelectedItemPayload)
 
   if (isKeyControlPressed.value) {
-    const uniqueItems: SelectedContainerItem[] = []
-    const duplicated: SelectedContainerItem[] = []
+    const uniqueItems: ContainerItem[] = []
+    const duplicated: ContainerItem[] = []
 
     items.forEach((item) => {
       if (!isSelected(item.position)) {
@@ -222,57 +210,40 @@ function containerItemSelected(
       }
     })
 
-    selectedItems.value.push(...uniqueItems)
+    selectedItems.value = [...selectedItems.value, ...uniqueItems]
 
-    if (toggle) {
-      duplicated.forEach(removeItemFromSelectedList)
+    if (toggle && duplicated.length) {
+      selectedItems.value = selectedItems.value.filter(
+        (item) =>
+          !duplicated.some((d) => hasSameCoordinates(item.position, d.position))
+      )
     }
   } else {
     selectedItems.value = items
   }
 }
 
-function removeItemFromSelectedList(item: SelectedContainerItem) {
-  const index = selectedItems.value.findIndex(
-    ({ position }) =>
-      position.x === item.position.x &&
-      position.y === item.position.y &&
-      position.z === item.position.z
-  )
-
-  if (index > -1) {
-    selectedItems.value.splice(index, 1)
-  }
-}
-
-function makeSelectedItemPayload(position: Position): SelectedContainerItem {
-  const coordinates = Object.values(position)
-  const arrPosition = getContainerPositionByCoordinates(
-    containerSize.value,
-    coordinates
-  )
+function makeSelectedItemPayload(position: Position): ContainerItem {
+  const { metadata = null, label } = getContainerItem(position) || {}
 
   return {
     position,
-    containerItem: getContainerItem(coordinates) ?? null,
-    arrIndex: arrPosition
+    metadata,
+    label
   }
 }
 
-function getContainerItem(coordinates: number[]): ContainerItem | undefined {
-  const pos = getContainerPositionByCoordinates(
-    containerSize.value,
-    coordinates
+function getContainerItem(position: Position): ContainerItem | undefined {
+  return props.container.containerItems.find((item) =>
+    hasSameCoordinates(item.position, position)
   )
-
-  return props.container.containerItems.find((item) => item.position === pos)
 }
 
 watch(containerSize, resetView)
 
 onMounted(resetView)
 
-function getDefaultCameraDistance() {
+function getDefaultCameraDistance(): Position {
   const { sizeX, sizeY, sizeZ } = props.container
   const [x, y, z] = containerGroupPosition.value
 

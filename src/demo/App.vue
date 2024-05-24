@@ -3,7 +3,6 @@
     ref="containerRef"
     class="container-3d"
     v-bind="opts"
-    v-model:selected-items="selectedItems"
     @container-item:right-click="openModal"
   />
   <div class="settings">
@@ -71,11 +70,23 @@ const opts = ref({
     containerItems: [
       {
         label: 'CO 1234',
-        position: 0
+        metadata: {
+          id: 1,
+          type: 'test'
+        },
+        position: {
+          x: 0,
+          y: 0,
+          z: 0
+        }
       },
       {
         label: 'CO 4567',
-        position: 4
+        position: {
+          x: 4,
+          y: 0,
+          z: 0
+        }
       }
     ]
   }
@@ -87,8 +98,8 @@ const currentEvent = ref({})
 const selectedItems = ref([])
 
 async function openModal(event) {
-  const label = event.containerItem?.label
-  const position = event.arrIndex
+  const label = event?.label
+  const { position } = event
   currentEvent.value = event
 
   await new Promise((resolve) => setTimeout(resolve, 50))
@@ -99,7 +110,10 @@ async function openModal(event) {
 
   if (payload) {
     const index = opts.value.container.containerItems.findIndex(
-      (item) => item.position === position
+      (item) =>
+        item.position.x === position.x &&
+        item.position.y === position.y &&
+        item.position.z === position.z
     )
 
     if (index > -1) {

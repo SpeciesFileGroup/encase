@@ -15,14 +15,11 @@ type Props = {
 }
 
 const ATTRIBUTES = {
-  color: 0xffffff,
   transparent: true,
-  opacity: 0.2,
+  opacity: 0.25,
   roughness: 0.1,
-  metalness: 0,
-  transmission: 1,
+  metalness: 0.2,
   ior: 1.5,
-  reflectivity: 0.5,
   clearcoat: 1,
   clearcoatRoughness: 0.1
 }

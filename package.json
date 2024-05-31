@@ -1,7 +1,7 @@
 {
   "name": "@sfgrp/encase",
   "private": false,
-  "version": "0.0.3",
+  "version": "0.0.4",
   "files": [
     "dist"
   ],
@@ -35,16 +35,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@sfgrp/encase": "^0.0.1",
-    "@tresjs/core": "^3.9.0",
-    "three": "^0.164.1",
+    "@tresjs/core": "^4.0.0",
+    "three": "^0.165.0",
     "vue": "^3.4.27"
   },
   "devDependencies": {
-    "@types/three": "^0.164.1",
-    "@vitejs/plugin-vue": "^5.0.4",
+    "@types/three": "^0.165.0",
+    "@vitejs/plugin-vue": "^5.0.5",
     "typescript": "^5.4.5",
-    "vite": "^5.2.11",
+    "vite": "^5.2.12",
     "vue-tsc": "^2.0.19"
   }
 }

@@ -39,8 +39,8 @@
                 :space="padding"
                 :selected="isSelected({ x, y, z })"
                 :container-item="getContainerItem({ x, y, z })"
-                @contextmenu.prevent=""
                 @click="(e) => onClick({ x, y, z }, e)"
+                @context-menu="(e) => onClick({ x, y, z }, e)"
               />
             </TresGroup>
           </template>
@@ -83,7 +83,12 @@
 <script setup lang="ts">
 import type { Container, ContainerItem, Position, CanvasOptions } from '@/types'
 import { reactive, ref, computed, watch, onMounted, CSSProperties } from 'vue'
-import { BasicShadowMap, NoToneMapping, SRGBColorSpace } from 'three'
+import {
+  BasicShadowMap,
+  NoToneMapping,
+  SRGBColorSpace,
+  NoColorSpace
+} from 'three'
 import { TresCanvas } from '@tresjs/core'
 import { useKeyboardKeys } from '@/composables'
 import {

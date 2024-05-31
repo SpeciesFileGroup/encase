@@ -1,13 +1,10 @@
 <template>
   <TresGroup :position="meshPosition">
     <TresMesh
-      @click="(_, event: MouseEvent) => emit('click', event)"
-      :user-data="{
-        x,
-        y,
-        z
-      }"
       name="ContainerItemMesh"
+      :user-data="{ x, y, z }"
+      @click="(event: MouseEvent) => emit('click', event)"
+      @context-menu="(event: MouseEvent) => emit('context-menu', event)"
     >
       <TresBoxGeometry :args="[size, size, size]" />
       <TresMeshToonMaterial :color="itemColor" />
@@ -50,7 +47,7 @@ type Props = {
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits(['click'])
+const emit = defineEmits(['click', 'context-menu'])
 
 const itemColor = computed<string>(() => {
   if (props.selected) {

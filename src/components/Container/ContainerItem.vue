@@ -57,13 +57,17 @@ const props = defineProps<Props>()
 const emit = defineEmits(['click', 'context-menu'])
 
 const itemColor = computed<string>(() => {
+  const {
+    empty = COLORS.ContainerItemEmpty,
+    filled = COLORS.ContainerItemFilled,
+    selected = COLORS.ContainerItemSelected
+  } = props.containerItem?.style?.color || {}
+
   if (props.selected) {
-    return COLORS.ContainerItemSelected
+    return selected
   }
 
-  return props.containerItem
-    ? COLORS.ContainerItemFilled
-    : COLORS.ContainerItemEmpty
+  return props.containerItem ? filled : empty
 })
 
 const meshPosition = computed<number[]>(() => {

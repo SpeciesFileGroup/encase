@@ -78,6 +78,12 @@ const opts = ref({
           x: 0,
           y: 0,
           z: 0
+        },
+        style: {
+          color: {
+            filled: 'orange',
+            selected: 'green'
+          }
         }
       },
       {

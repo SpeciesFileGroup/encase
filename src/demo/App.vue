@@ -56,6 +56,11 @@ import CurrentLevel from './settings/CurrentLevel.vue'
 import ContainerSelected from './settings/ContainerSelected.vue'
 
 const opts = ref({
+  cameraPosition: {
+    x: 100,
+    y: 100,
+    z: 100
+  },
   padding: 1,
   enclose: true,
   itemSize: 1,

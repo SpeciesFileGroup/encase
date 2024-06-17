@@ -102,12 +102,13 @@ import OrbitControls from './Controls/OrbitControls.vue'
 import { EVENT, COLORS } from '@/constants'
 
 type Props = {
+  cameraPosition: Position
+  canvas?: CanvasOptions
+  container: Container
+  currentLevel: number | undefined
+  enclose: boolean
   itemSize?: number
   padding?: number
-  container: Container
-  enclose: boolean
-  currentLevel: number | undefined
-  canvas?: CanvasOptions
 }
 
 const CAMERA_FOV = 25
@@ -256,8 +257,6 @@ function getContainerItem(position: Position): ContainerItem | undefined {
   )
 }
 
-watch(containerSize, resetView)
-
 onMounted(resetView)
 
 function getDefaultCameraDistance(): Position {
@@ -286,7 +285,10 @@ function resetView() {
     const { camera } = sceneRef.value.context
 
     if (camera.value) {
-      Object.assign(camera.value.position, getDefaultCameraDistance())
+      Object.assign(
+        camera.value.position,
+        props.cameraPosition || getDefaultCameraDistance()
+      )
     }
   }
 }

@@ -3,8 +3,10 @@
     <TresMesh
       name="ContainerItemMesh"
       :user-data="{ x, y, z }"
-      @click="(event: MouseEvent) => emit('click', event)"
-      @context-menu="(event: MouseEvent) => emit('context-menu', event)"
+      @pointer-enter="(event: MouseEvent) => handleEvents.onMouseOver({ x, y, z }, event)"
+      @pointer-leave="(event: MouseEvent) => handleEvents.onMouseOut({ x, y, z }, event)"
+      @click="(event: MouseEvent) => handleEvents.onClick({ x, y, z }, event)"
+      @context-menu="(event: MouseEvent) => handleEvents.onClick({ x, y, z }, event)"
     >
       <TresBoxGeometry :args="[size, size, size]" />
       <TresMeshToonMaterial :color="itemColor" />
@@ -13,12 +15,12 @@
       <Text3D
         shadow
         name="text"
+        need-updates
         :text="containerItem?.label"
         :font="fontPath"
         :size="0.2"
         :depth="0"
         :curve-segments="5"
-        :need-updates="true"
         :bevel-enabled="false"
         :position="[0, size / 2 + 0.3, 0]"
         look-at-camera
@@ -44,6 +46,11 @@ type Props = {
   space: number
   selected: boolean
   containerItem: ContainerItem | undefined
+  handleEvents: {
+    onClick: Function
+    onMouseOver: Function
+    onMouseOut: Function
+  }
 }
 
 const props = defineProps<Props>()

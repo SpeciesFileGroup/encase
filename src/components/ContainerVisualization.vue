@@ -39,8 +39,11 @@
                 :space="padding"
                 :selected="isSelected({ x, y, z })"
                 :container-item="getContainerItem({ x, y, z })"
-                @click="(e) => onClick({ x, y, z }, e)"
-                @context-menu="(e) => onClick({ x, y, z }, e)"
+                :handle-events="{
+                  onClick,
+                  onMouseOver,
+                  onMouseOut
+                }"
               />
             </TresGroup>
           </template>
@@ -83,12 +86,7 @@
 <script setup lang="ts">
 import type { Container, ContainerItem, Position, CanvasOptions } from '@/types'
 import { reactive, ref, computed, watch, onMounted, CSSProperties } from 'vue'
-import {
-  BasicShadowMap,
-  NoToneMapping,
-  SRGBColorSpace,
-  NoColorSpace
-} from 'three'
+import { BasicShadowMap, NoToneMapping, SRGBColorSpace } from 'three'
 import { TresCanvas } from '@tresjs/core'
 import { useKeyboardKeys } from '@/composables'
 import {
@@ -170,8 +168,22 @@ const selectedItems = defineModel<ContainerItem[]>('selectedItems', {
 const emit = defineEmits([
   EVENT.ContainerItemClick,
   EVENT.ContainerItemLeftClick,
-  EVENT.ContainerItemRightClick
+  EVENT.ContainerItemRightClick,
+  EVENT.ContainerItemMouseOut,
+  EVENT.ContainerItemMouseOver
 ])
+
+function onMouseOver(position: Position, e: MouseEvent) {
+  const payload = makeSelectedItemPayload(position)
+
+  emit(EVENT.ContainerItemMouseOver, payload, e)
+}
+
+function onMouseOut(position: Position, e: MouseEvent) {
+  const payload = makeSelectedItemPayload(position)
+
+  emit(EVENT.ContainerItemMouseOut, payload, e)
+}
 
 function onClick(position: Position, e: MouseEvent) {
   const payload = makeSelectedItemPayload(position)
@@ -264,7 +276,7 @@ function getDefaultCameraDistance(): Position {
 
   return {
     x: 0,
-    y: 25,
+    y: 30,
     z: zPos
   }
 }

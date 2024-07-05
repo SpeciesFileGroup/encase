@@ -85,7 +85,7 @@
 
 <script setup lang="ts">
 import type { Container, ContainerItem, Position, CanvasOptions } from '@/types'
-import { reactive, ref, computed, watch, onMounted, CSSProperties } from 'vue'
+import { reactive, ref, computed, onMounted, CSSProperties } from 'vue'
 import { BasicShadowMap, NoToneMapping, SRGBColorSpace } from 'three'
 import { TresCanvas } from '@tresjs/core'
 import { useKeyboardKeys } from '@/composables'
@@ -177,18 +177,22 @@ const emit = defineEmits([
 function onMouseOver(position: Position, e: MouseEvent) {
   const payload = makeSelectedItemPayload(position)
 
+  e.stopPropagation()
   emit(EVENT.ContainerItemMouseOver, payload, e)
 }
 
 function onMouseOut(position: Position, e: MouseEvent) {
   const payload = makeSelectedItemPayload(position)
 
+  e.stopPropagation()
   emit(EVENT.ContainerItemMouseOut, payload, e)
 }
 
 function onClick(position: Position, e: MouseEvent) {
   const payload = makeSelectedItemPayload(position)
   const toggle = e.button === 0
+
+  e.stopPropagation()
 
   switch (e.button) {
     case 0:

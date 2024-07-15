@@ -1,7 +1,7 @@
 {
   "name": "@sfgrp/encase",
   "private": false,
-  "version": "0.0.8",
+  "version": "0.0.9",
   "files": [
     "dist"
   ],
@@ -35,7 +35,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tresjs/core": "^4.1.0",
+    "@tresjs/core": "^4.2.0",
     "three": "^0.166.1",
     "vue": "^3.4.31"
   },

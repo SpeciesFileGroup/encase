@@ -35,15 +35,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tresjs/core": "^4.2.0",
-    "three": "^0.166.1",
-    "vue": "^3.4.31"
+    "@tresjs/core": "^4.2.3",
+    "three": "^0.167.0",
+    "vue": "^3.4.34"
   },
   "devDependencies": {
-    "@types/three": "^0.166.0",
-    "@vitejs/plugin-vue": "^5.0.5",
-    "typescript": "^5.5.3",
-    "vite": "^5.3.3",
-    "vue-tsc": "^2.0.26"
+    "@types/three": "^0.167.0",
+    "@vitejs/plugin-vue": "^5.1.0",
+    "typescript": "^5.5.4",
+    "vite": "^5.3.5",
+    "vue-tsc": "^2.0.29"
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Items</h3>
+    <h2 class="setting-title">Item</h2>
     <div>
       <input
         type="number"

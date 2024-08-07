@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Show level</h3>
+    <h2 class="setting-title">Level</h2>
     <ul>
       <li>
         <label>
@@ -38,6 +38,7 @@ const selectedLevel = defineModel<number | undefined>()
 
 <style scoped>
 ul {
+  margin: 0px;
   list-style: none;
   padding: 0;
 }

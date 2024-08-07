@@ -1,10 +1,9 @@
 <template>
   <TresMesh
-    v-if="font"
+    v-if="font && localText"
     ref="text3DRef"
   >
     <TresTextGeometry
-      v-if="localText"
       :args="[localText, textOptions]"
       :center="center"
     />
@@ -103,7 +102,10 @@ const localText = computed(() => {
   } else if (slots.default) {
     return (slots.default()[0].children as string)?.trim()
   }
-  return needUpdates.value ? '' : ''
+
+  if (needUpdates) {
+    return ''
+  }
 })
 
 const text3DRef = shallowRef()

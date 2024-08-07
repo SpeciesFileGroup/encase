@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Container items</h3>
+    <h2 class="setting-title">Container items</h2>
     <div
       v-for="(item, index) in containerItems"
       class="row"

@@ -1,49 +1,51 @@
 <template>
-  <ContainerVisualization
-    ref="containerRef"
-    class="container-3d"
-    v-bind="opts"
-    v-model:selected-items="selectedItems"
-    @container-item:right-click="openModal"
-  />
-  <div class="settings">
-    <button
-      type="button"
-      @click="() => containerRef.resetView()"
-    >
-      Reset view
-    </button>
-    <h2>Container</h2>
-    <div>
-      <label>
-        <input
-          type="checkbox"
-          v-model="opts.enclose"
-        />
-        Enclose
-      </label>
+  <div class="main-container">
+    <div class="settings">
+      <div class="title">
+        <h2>Container</h2>
+        <button
+          type="button"
+          @click="resetDemo"
+        >
+          Reset
+        </button>
+      </div>
+      <div>
+        <label>
+          <input
+            type="checkbox"
+            v-model="opts.enclose"
+          />
+          Enclose
+        </label>
+      </div>
+
+      <ContainerSize v-model="opts.container" />
+
+      <CurrentLevel
+        :levels="opts.container.sizeY"
+        v-model="opts.currentLevel"
+      />
+
+      <ContainerItem v-model="opts" />
+
+      <ContainerItems
+        :container-items="opts.container.containerItems"
+        @remove="(index: number) => opts.container.containerItems.splice(index, 1)"
+      />
+      <ContainerDebug :current-event="currentEvent" />
+      <ContainerSelected :selected="selectedItems" />
     </div>
-
-    <ContainerSize v-model="opts.container" />
-
-    <CurrentLevel
-      :levels="opts.container.sizeY"
-      v-model="opts.currentLevel"
+    <ContainerVisualization
+      ref="containerRef"
+      class="container-3d"
+      v-bind="opts"
+      v-model:selected-items="selectedItems"
+      @container-item:right-click="openModal"
     />
-
-    <ContainerItem v-model="opts" />
-
-    <div>
-      <h3>Event debug</h3>
-      <pre v-text="JSON.stringify(currentEvent, null, 2)" />
-    </div>
-    <ContainerItems
-      :container-items="opts.container.containerItems"
-      @remove="(index: number) => opts.container.containerItems.splice(index, 1)"
-    />
-    <ContainerSelected :selected="selectedItems" />
   </div>
   <ContainerItemModal ref="containerItemModalRef" />
+  <GithubRepo />
 </template>
 
 <script setup lang="ts">
@@ -53,57 +55,12 @@ import ContainerItemModal from './ContainerItemModal.vue'
 import ContainerItems from './settings/ContainerItems.vue'
 import ContainerItem from './settings/ContainerItem.vue'
 import ContainerSize from './settings/ContainerSize.vue'
-import CurrentLevel from './settings/CurrentLevel.vue'
+import ContainerDebug from './settings/ContainerDebug.vue'
 import ContainerSelected from './settings/ContainerSelected.vue'
+import CurrentLevel from './settings/CurrentLevel.vue'
+import GithubRepo from './GithubRepo.vue'
 
-const opts = ref({
-  cameraPosition: {
-    x: 100,
-    y: 100,
-    z: 100
-  },
-  padding: 1,
-  enclose: true,
-  itemSize: 1,
-  currentLevel: 0,
-  container: {
-    name: 'Test',
-    disposition: 'disp',
-    label: 'testing',
-    sizeX: 12,
-    sizeY: 2,
-    sizeZ: 8,
-    containerItems: [
-      {
-        label: 'CO 1234',
-        metadata: {
-          id: 1,
-          type: 'test'
-        },
-        position: {
-          x: 0,
-          y: 0,
-          z: 0
-        },
-        style: {
-          color: {
-            filled: 'orange',
-            selected: 'green'
-          }
-        }
-      },
-      {
-        label: 'CO 4567',
-        position: {
-          x: 4,
-          y: 0,
-          z: 0
-        }
-      }
-    ]
-  }
-})
-
+const opts = ref(makeDefaultConfig())
 const containerRef = ref()
 const containerItemModalRef = ref<InstanceType<typeof ContainerItem>>(null)
 const currentEvent = ref({})
@@ -142,15 +99,79 @@ async function openModal(event) {
     }
   }
 }
+
+function makeDefaultConfig() {
+  return {
+    cameraPosition: {
+      x: 100,
+      y: 100,
+      z: 100
+    },
+    padding: 1,
+    enclose: true,
+    itemSize: 1,
+    currentLevel: 0,
+    container: {
+      name: 'Test',
+      disposition: 'disp',
+      label: 'testing',
+      sizeX: 12,
+      sizeY: 2,
+      sizeZ: 8,
+      containerItems: [
+        {
+          label: 'CO 1234',
+          metadata: {
+            id: 1,
+            type: 'test'
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: 0
+          },
+          style: {
+            color: {
+              filled: 'orange',
+              selected: 'green'
+            }
+          }
+        },
+        {
+          label: 'CO 4567',
+          position: {
+            x: 4,
+            y: 0,
+            z: 0
+          }
+        }
+      ]
+    }
+  }
+}
+
+function resetDemo() {
+  opts.value = makeDefaultConfig()
+  containerRef.value.resetView()
+}
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
+  font-family: 'Inter', sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
 }
 
 #app,
@@ -159,20 +180,39 @@ body {
   height: 100%;
 }
 
+.main-container {
+  display: flex;
+  height: 100vh;
+  width: 10wv;
+  max-width: 100wv;
+  flex-direction: row;
+  align-items: start;
+}
+
 .settings {
-  width: 240px;
+  width: 320px;
+  box-sizing: border-box;
   background-color: #ffffff;
-  padding: 1rem;
-  position: fixed;
-  left: 0;
-  top: 0;
+  padding: 0.5rem 2rem;
   z-index: 10;
-  overflow-y: scroll;
+  overflow-y: auto;
   max-height: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
 }
 
 .d-block {
   display: block;
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 input[type='number'] {

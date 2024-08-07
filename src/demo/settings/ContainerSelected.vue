@@ -1,10 +1,7 @@
 <template>
   <div>
-    <h3>Selected boxes</h3>
-    <pre>
-  {{ JSON.stringify(selected, null, 2) }}
-  </pre
-    >
+    <h2 class="setting-title">Selected boxes</h2>
+    <pre v-text="JSON.stringify(selected, null, 2)" />
   </div>
 </template>
 

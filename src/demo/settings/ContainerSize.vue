@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Size</h3>
+    <h2 class="setting-title">Size</h2>
     <div>
       <input
         type="number"

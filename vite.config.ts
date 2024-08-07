@@ -4,7 +4,9 @@ import vue from '@vitejs/plugin-vue'
 import path from 'node:path'
 
 export default defineConfig(({ mode }) => {
+  const base = process.env.VITE_BASE_URL || '/'
   const config = {
+    base,
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src')

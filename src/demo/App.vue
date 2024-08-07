@@ -3,6 +3,7 @@
     ref="containerRef"
     class="container-3d"
     v-bind="opts"
+    v-model:selected-items="selectedItems"
     @container-item:right-click="openModal"
   />
   <div class="settings">
